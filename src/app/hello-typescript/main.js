@@ -1,0 +1,1 @@
+var minhaVariavel = 'minha variavel';
