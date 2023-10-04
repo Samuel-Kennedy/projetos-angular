@@ -10,6 +10,10 @@ import { CursosListaComponent } from './cursos-lista/cursos-lista.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UnsubscribePocComponent } from './unsubscribe-poc/unsubscribe-poc.component';
 import { CursosFormComponent } from './cursos-form/cursos-form.component';
+import { AlertModalComponent } from './alert-modal/alert-modal/alert-modal.component';
+import { ConfirmModalComponent } from './alert-modal/confirm-modal/confirm-modal.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 @NgModule({
   declarations: [
@@ -18,13 +22,16 @@ import { CursosFormComponent } from './cursos-form/cursos-form.component';
     MeuPrimeiro2Component,
     CursosListaComponent,
     UnsubscribePocComponent,
-    CursosFormComponent
+    CursosFormComponent,
+    AlertModalComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
