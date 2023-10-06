@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CursoListaService } from '../cursos-lista/curso-lista.service';
 import { AlertModalService } from '../alert-modal/alert-modal.service';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Curso } from '../cursos-lista/curso';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-cursos-form',
@@ -14,11 +17,41 @@ export class CursosFormComponent implements OnInit {
   form!: FormGroup;
   submitted = false;
 
-  constructor(private service: CursoListaService, private fb: FormBuilder, private modal: AlertModalService, private location: Location){}
+  constructor(private service: CursoListaService, private fb: FormBuilder, private modal: AlertModalService, private location: Location, private route: ActivatedRoute){}
 
   /*[Validators.required,Validators.minLingth(3), Validators.maxLength(250)]*/
   ngOnInit(): void {
+
+    // let registro = null;
+
+    // this.route.params.subscribe(
+    //   (params: any) => {
+    //     const id = params['id'];
+    //     console.log(id);
+
+    //     const curso$ = this.service.loadByID(id)
+    //     curso$.subscribe(curso =>{
+    //       registro = curso;
+    //       this.updateForm(curso);
+    //     });
+    //   }
+    // );
+
+    this.route.params
+    .pipe(
+      map((params: any) => params['id']),
+      switchMap(id =>{
+        return this.service.loadByID(id);
+      })
+    )
+    .subscribe(
+      (curso) => {
+        this.updateForm(curso);
+      }
+    );
+
     this.form = this.fb.group({
+      id: [null],
       nome: [null, [Validators.required,Validators.minLength(3), Validators.maxLength(250)]]
     });
     
@@ -39,6 +72,13 @@ export class CursosFormComponent implements OnInit {
         
       );
     }
+  }
+
+  updateForm(curso: any){
+    this.form.patchValue({
+      id: curso.id,
+      nome: curso.nome
+    });
   }
 
   onCancel(){
